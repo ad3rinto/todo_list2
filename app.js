@@ -3,7 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const date = require(__dirname + "/date.js");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -22,6 +22,15 @@ const itemSchema = {
 };
 
 const Item = mongoose.model("item",itemSchema);
+
+const paint = new Item("Paint the garage");
+paint.save();
+
+const water = new Item("Water plants");
+water.save();
+
+const tibi = new Item("Tibi");
+tibi.save();
 
 // const items = ["Buy Food", "Cook Food", "Eat Food"];
 // const workItems = [];
