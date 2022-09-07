@@ -23,16 +23,16 @@ const itemSchema = {
 
 const Item = mongoose.model("item",itemSchema);
 
-const paint = new Item("Paint the garage");
+const paint = new Item({name:"Paint the garage"});
 paint.save();
 
-const water = new Item("Water plants");
+const water = new Item({name:"Water plants"});
 water.save();
 
-const tibi = new Item("Tibi");
+const tibi = new Item({name:"Tibi"});
 tibi.save();
 
-// const items = ["Buy Food", "Cook Food", "Eat Food"];
+const items = [paint, water, tibi];
 // const workItems = [];
 
 app.get("/", function(req, res) {
