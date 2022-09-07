@@ -23,23 +23,31 @@ const itemSchema = {
 
 const Item = mongoose.model("item",itemSchema);
 
-const paint = new Item({name:"Paint the garage"});
-paint.save();
+const item1 = new Item({name:"Paint the garage"});
 
-const water = new Item({name:"Water plants"});
-water.save();
 
-const tibi = new Item({name:"Tibi"});
-tibi.save();
+const item2 = new Item({name:"Water plants"});
 
-const items = [paint, water, tibi];
+
+const item3 = new Item({name:"Tibi"});
+
+const defaultItems = [item1, item2, item3]
+
+Item.insertMany(defaultItems, function(err){
+  if(err){
+    console.log(err)
+  } else {
+    console.log("Items successfully added to database")
+
+  }
+});
 // const workItems = [];
 
 app.get("/", function(req, res) {
 
 const day = date.getDate();
 
-  res.render("list", {listTitle: day, newListItems: items});
+  res.render("list", {listTitle: day, newListItems: defaultItems});
 
 });
 
