@@ -33,14 +33,7 @@ const item3 = new Item({name:"Tibi"});
 
 const defaultItems = [item1, item2, item3]
 
-// Item.insertMany(defaultItems, function(err){
-//   if (err) {
-//     console.log(err)
-//   } else {
-//     console.log("Items successfully added to database")
 
-//   }
-// });
 // const workItems = [];
 
 
@@ -48,15 +41,27 @@ app.get("/", function(req, res) {
   const day = date.getDate();
 
   Item.find(function(err, foundItems){
-    if (err){
-      console.log(err)
+    if (foundItems.length === 0){
+      Item.insertMany(defaultItems, function(err){
+        if (err) {
+          console.log(err)
+        } else {
+          console.log("Items successfully added to database")
+      
+        }
+      });
+      res.redirect("/")
+
     } else {
       res.render("list", {listTitle: day, newListItems: foundItems});
-    };
-  });
 
-
+    }
+      
+    });
 });
+
+
+
 
 app.post("/", function(req, res){
 
@@ -66,7 +71,9 @@ app.post("/", function(req, res){
     workItems.push(item);
     res.redirect("/work");
   } else {
-    items.push(item);
+    const toBeInserted = new Item({name:item});
+    toBeInserted.save();
+    
     res.redirect("/");
   }
 });
