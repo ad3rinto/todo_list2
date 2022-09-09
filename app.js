@@ -11,9 +11,10 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-
+//Connect to database
 mongoose.connect("mongodb://localhost:27017/todolistDB")
 
+//create schema for the collection
 const itemSchema = {
   name:{
     type:String,
@@ -21,16 +22,16 @@ const itemSchema = {
   }
 };
 
+//create mongoose model
 const Item = mongoose.model("item",itemSchema);
 
+
+//create a bunch of default todo items
 const item1 = new Item({name:"Paint the garage"});
-
-
 const item2 = new Item({name:"Water plants"});
-
-
 const item3 = new Item({name:"Tibi"});
 
+//create list of defult items
 const defaultItems = [item1, item2, item3]
 
 
@@ -40,6 +41,7 @@ const defaultItems = [item1, item2, item3]
 app.get("/", function(req, res) {
   const day = date.getDate();
 
+ //pull data from database
   Item.find(function(err, foundItems){
     if (foundItems.length === 0){
       Item.insertMany(defaultItems, function(err){
@@ -47,7 +49,7 @@ app.get("/", function(req, res) {
           console.log(err)
         } else {
           console.log("Items successfully added to database")
-      
+
         }
       });
       res.redirect("/")
@@ -56,7 +58,7 @@ app.get("/", function(req, res) {
       res.render("list", {listTitle: day, newListItems: foundItems});
 
     }
-      
+
     });
 });
 
@@ -73,7 +75,7 @@ app.post("/", function(req, res){
   } else {
     const toBeInserted = new Item({name:item});
     toBeInserted.save();
-    
+
     res.redirect("/");
   }
 });
@@ -85,6 +87,8 @@ app.get("/work", function(req,res){
 app.get("/about", function(req, res){
   res.render("about");
 });
+
+
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
